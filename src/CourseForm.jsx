@@ -41,32 +41,36 @@ function CourseForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="courseTitle">Course Title:</label>
-      <input
-        type="text"
-        id="courseTitle"
-        value={courseTitle}
-        onChange={(e) => setCourseTitle(e.target.value)}
-      />
+      <div className="row">
+        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <label htmlFor="courseTitle">Course Title:</label>
+          <input
+            type="text"
+            id="courseTitle"
+            value={courseTitle}
+            onChange={(e) => setCourseTitle(e.target.value)}
+          />
 
-      <label htmlFor="courseCode">Course Code:</label>
-      <input
-        type="text"
-        id="courseCode"
-        value={courseCode}
-        onChange={(e) => setCourseCode(e.target.value)}
-      />
+          <label htmlFor="courseCode">Course Code:</label>
+          <input
+            type="text"
+            id="courseCode"
+            value={courseCode}
+            onChange={(e) => setCourseCode(e.target.value)}
+          />
 
-      <label htmlFor="courseDescription">Course Description:</label>
-      <textarea
-        id="courseDescription"
-        value={courseDescription}
-        onChange={(e) => setCourseDescription(e.target.value)}
-      />
+          <label htmlFor="courseDescription">Course Description:</label>
+          <textarea
+            id="courseDescription"
+            value={courseDescription}
+            onChange={(e) => setCourseDescription(e.target.value)}
+          />
 
-      <button className="btn btn-outline-light " type="submit">
-        Add Course
-      </button>
+          <button className="btn btn-outline-light " type="submit">
+            Add Course
+          </button>
+        </div>
+      </div>
     </form>
   );
 }
