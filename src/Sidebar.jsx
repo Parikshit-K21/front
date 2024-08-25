@@ -1,15 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function Sidebar() {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [year, setYear] = useState("");
   const [semester, setSelectedSemester] = useState("");
+  const [courses, setCourses] = useState([]);
 
-  const handleSubmit = () => {
-    console.log("Selected course:", selectedCourse);
-    console.log("Year:", year);
-    console.log("Semester:", semester);
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/courses");
+        setCourses(response.data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+    fetchCourses();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!selectedCourse || !year || !semester) {
+      console.warn("Please select all fields.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8080/api/instances", {
+        courseId: selectedCourse,
+        year,
+        semester,
+      });
+
+      console.log("Course instance created successfully:", response.data);
+    } catch (error) {
+      console.error("Error creating course instance:", error);
+    }
+
+    setSelectedCourse("");
+    setYear("");
+    setSelectedSemester("");
   };
 
   return (
@@ -20,11 +52,12 @@ function Sidebar() {
         value={selectedCourse}
         onChange={(e) => setSelectedCourse(e.target.value)}
       >
-        {}
         <option value="">Select Course</option>
-        <option value="course1">Course 1</option>
-        <option value="course2">Course 2</option>
-        {/* ... more options */}
+        {courses.map((course) => (
+          <option key={course.id} value={course.id}>
+            {course.name} // Assuming your course data has a `name` property
+          </option>
+        ))}
       </select>
 
       <label htmlFor="yearSelect">Year:</label>
@@ -44,7 +77,6 @@ function Sidebar() {
         <option value="">Select Semester</option>
         <option value="1">1st Semester</option>
         <option value="2">2nd Semester</option>
-        {/* Add more semester options as needed */}
       </select>
 
       <button className="btn btn-outline-light " type="submit">
